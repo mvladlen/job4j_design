@@ -1,5 +1,8 @@
 language: java
 
+# install
+install: mvn install
+
 jdk:
   - openjdk15
 
