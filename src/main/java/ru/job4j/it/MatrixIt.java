@@ -14,54 +14,28 @@ public class MatrixIt implements Iterator<Integer> {
 
     @Override
     public boolean hasNext() {
-        try {
-            if (findNextColumn() >= 0) {
-                return true;
-            }
-        } catch (NoSuchElementException ec) {
-            try {
-                if (findNextRow() >= 0) {
-                    return true;
-                }
-            } catch (NoSuchElementException er) {
-                return false;
-            }
-        }
-        return false;
-
+        return hasNextColumn() || hasNextRow();
     }
 
     @Override
     public Integer next() {
-/*
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-*/
-        try {
-            this.column = findNextColumn();
-        } catch (NoSuchElementException ec) {
-            this.row = findNextRow();
-            this.column = 0;
-        }
-        return data[this.row][this.column];
+        return data[row][++column];
     }
 
-    private int findNextColumn() throws NoSuchElementException {
-        if (data[row].length < column + 2) {
-            throw new NoSuchElementException();
-        }
-        return column + 1;
+    private boolean hasNextColumn() {
+        return data[row].length > column + 1;
     }
 
-    private int findNextRow() throws NoSuchElementException {
-        int row = this.row;
-        while (data.length > row + 1) {
-            row++;
-            if (data[row].length > 0) {
-                return row;
+    private boolean hasNextRow() {
+        column = -1;
+        while (data.length > ++row) {
+            if (hasNextColumn()) {
+                return true;
             }
         }
-        throw new NoSuchElementException();
+        return false;
     }
 }
