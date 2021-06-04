@@ -1,36 +1,44 @@
 package ru.job4j.generics;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Objects;
 
-public class SimpleArray<T> implements Iterable {
-    private final ArrayList<T> array;
+public class SimpleArray<T> {
+    private final T[] array;
     private int filled;
+    private int point;
 
     public SimpleArray(int size) {
-        this.array = new ArrayList<>(size);
-
+        this.array = (T[]) new Object[size];
+        filled = 0;
+        point = 0;
     }
 
     public void add(T model) {
-        this.array.add(model);
+        this.array[filled++] = model;
     }
 
     public void set(int index, T model) {
-        this.array.set(index, model);
+        Objects.checkIndex(index, filled);
+        this.array[index] = model;
     }
 
     public void remove(int index) {
-        this.array.remove(index);
+        Objects.checkIndex(index, filled);
+        System.arraycopy(this.array, index + 1, this.array, index, this.array.length - index - 1);
+        filled--;
     }
 
     public T get(int index) {
-        return this.array.get(index);
+        Objects.checkIndex(index, filled);
+        return this.array[index];
     }
 
-    @Override
-    public Iterator<T> iterator() {
-
-        return null;
+    public boolean hasNext() {
+        return point < array.length;
     }
+
+    public T next() {
+        return array[point++];
+    }
+
 }

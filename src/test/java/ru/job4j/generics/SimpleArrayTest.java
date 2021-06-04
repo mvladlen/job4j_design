@@ -1,15 +1,18 @@
 package ru.job4j.generics;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SimpleArrayTest {
+import static org.junit.Assert.assertTrue;
 
+public class SimpleArrayTest {
 
     @Test
     public void add() {
         SimpleArray<String> str = new SimpleArray<>(10);
         str.add("First");
+        assertTrue(str.get(0).equals("First"));
     }
 
     @Test
@@ -17,13 +20,19 @@ public class SimpleArrayTest {
         SimpleArray<String> str = new SimpleArray<>(10);
         str.add("First");
         str.set(0, "Fifth");
+        assertTrue(str.get(0).equals("Fifth"));
+
     }
 
     @Test
     public void remove() {
         SimpleArray<String> str = new SimpleArray<>(10);
         str.add("First");
-        str.remove(0);
+        str.add("Second");
+        str.add("Third");
+        str.remove(1);
+        assertTrue(str.get(1).equals("Third"));
+
     }
 
     @Test
