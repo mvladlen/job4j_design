@@ -5,12 +5,10 @@ import java.util.Objects;
 public class SimpleArray<T> {
     private final T[] array;
     private int filled;
-    private int point;
 
     public SimpleArray(int size) {
         this.array = (T[]) new Object[size];
         filled = 0;
-        point = 0;
     }
 
     public void add(T model) {
@@ -33,12 +31,9 @@ public class SimpleArray<T> {
         return this.array[index];
     }
 
-    public boolean hasNext() {
-        return point < array.length;
+    public SimpleArrayIterator iterator() {
+        return new SimpleArrayIterator(this.array);
     }
 
-    public T next() {
-        return array[point++];
-    }
 
 }
