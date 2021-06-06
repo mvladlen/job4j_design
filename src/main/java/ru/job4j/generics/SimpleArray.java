@@ -2,7 +2,7 @@ package ru.job4j.generics;
 
 import java.util.Objects;
 
-public class SimpleArray<T> {
+public class SimpleArray<T> implements Iterable<T> {
     private final T[] array;
     private int filled;
 
@@ -32,7 +32,7 @@ public class SimpleArray<T> {
     }
 
     public SimpleArrayIterator iterator() {
-        return new SimpleArrayIterator(this.array);
+        return new SimpleArrayIterator(this.array,filled);
     }
 
 
