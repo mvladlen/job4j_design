@@ -9,7 +9,7 @@ public final class MemStore<T extends Base> implements Store<T> {
 
     @Override
     public void add(T model) {
-        mem.put("", model);
+        mem.put(model.getId(), model);
     }
 
     @Override
