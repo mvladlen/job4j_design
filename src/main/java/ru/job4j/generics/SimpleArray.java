@@ -31,8 +31,8 @@ public class SimpleArray<T> implements Iterable<T> {
         return this.array[index];
     }
 
-    public SimpleArrayIterator iterator() {
-        return new SimpleArrayIterator(this.array,filled);
+    public SimpleArrayIterator<T> iterator() {
+        return new SimpleArrayIterator<>(this.array, filled);
     }
 
 
