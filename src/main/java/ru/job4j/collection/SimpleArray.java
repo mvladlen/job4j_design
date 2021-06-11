@@ -20,10 +20,14 @@ public class SimpleArray<T> implements Iterable<T> {
 
     public void add(T model) {
         if (filled >= container.length) {
-            container = Arrays.copyOf(container, container.length * 2);
+            expand();
         }
         container[filled++] = model;
         modCount++;
+    }
+
+    public void expand() {
+        container = Arrays.copyOf(container, container.length * 2);
     }
 
     @Override
