@@ -26,7 +26,7 @@ public class SimpleArray<T> implements Iterable<T> {
         modCount++;
     }
 
-    public void expand() {
+    private void expand() {
         container = Arrays.copyOf(container, container.length * 2);
     }
 
