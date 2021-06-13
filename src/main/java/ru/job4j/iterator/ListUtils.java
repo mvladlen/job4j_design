@@ -57,7 +57,7 @@ public class ListUtils {
             T value = i.next();
             ListIterator<T> e = elements.listIterator();
             while (e.hasNext()) {
-                if (e.next() == value) {
+                if (value.equals(e.next())) {
                     i.remove();
                 }
             }
