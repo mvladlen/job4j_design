@@ -1,9 +1,6 @@
 package ru.job4j.collection.map;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class User {
     private final String name;
@@ -25,5 +22,11 @@ public class User {
         for (Map.Entry<User, Object> m : map.entrySet()) {
             System.out.println("key= " + m.getKey() + "   value= " + m.getValue());
         }
+    }
+
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, children, birthday.getTimeInMillis());
     }
 }
