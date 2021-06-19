@@ -23,10 +23,23 @@ public class User {
             System.out.println("key= " + m.getKey() + "   value= " + m.getValue());
         }
     }
-
-
+/*
     @Override
     public int hashCode() {
         return Objects.hash(name, children, birthday.getTimeInMillis());
+    }*/
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return children == user.children
+                && Objects.equals(name, user.name)
+                && Objects.equals(birthday, user.birthday);
     }
 }
