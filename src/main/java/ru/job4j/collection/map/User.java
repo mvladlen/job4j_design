@@ -23,11 +23,11 @@ public class User {
             System.out.println("key= " + m.getKey() + "   value= " + m.getValue());
         }
     }
-/*
+
     @Override
     public int hashCode() {
         return Objects.hash(name, children, birthday.getTimeInMillis());
-    }*/
+    }
 
     @Override
     public boolean equals(Object o) {
