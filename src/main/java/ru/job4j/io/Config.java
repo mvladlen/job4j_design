@@ -1,0 +1,60 @@
+package ru.job4j.io;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringJoiner;
+
+public class Config {
+
+    private final String path;
+    private final Map<String, String> values = new HashMap<>();
+
+    public Config(String path) {
+        this.path = path;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new Config("app.properties"));
+
+    }
+
+    private void parse(String str) {
+        if (str.length() >= 1 && str.charAt(0) != '#') {
+            int index = str.indexOf("=");
+            if (index != str.lastIndexOf("=") || index == 0 || (index + 1) == str.length()) {
+                throw new IllegalArgumentException();
+            }
+            values.put(str.substring(0, index), str.substring(index + 1));
+        } 
+    }
+
+    public void load() {
+        try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
+            read
+                    .lines()
+                    .forEach(this::parse);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String value(String key) {
+        if (!values.containsKey(key)) return null;
+//            throw new UnsupportedOperationException("Don't impl this method yet!");
+        return values.get(key);
+    }
+
+    @Override
+    public String toString() {
+        StringJoiner out = new StringJoiner(System.lineSeparator());
+        try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
+            read.lines().forEach(out::add);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return out.toString();
+    }
+
+}
