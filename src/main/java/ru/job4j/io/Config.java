@@ -2,6 +2,7 @@ package ru.job4j.io;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
@@ -27,7 +28,7 @@ public class Config {
                 throw new IllegalArgumentException();
             }
             values.put(str.substring(0, index), str.substring(index + 1));
-        } 
+        }
     }
 
     public void load() {
@@ -41,8 +42,6 @@ public class Config {
     }
 
     public String value(String key) {
-        if (!values.containsKey(key)) return null;
-//            throw new UnsupportedOperationException("Don't impl this method yet!");
         return values.get(key);
     }
 
@@ -51,7 +50,7 @@ public class Config {
         StringJoiner out = new StringJoiner(System.lineSeparator());
         try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
             read.lines().forEach(out::add);
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return out.toString();
