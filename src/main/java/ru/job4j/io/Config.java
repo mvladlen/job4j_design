@@ -36,7 +36,7 @@ public class Config {
             read
                     .lines()
                     .forEach(this::parse);
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
