@@ -17,7 +17,7 @@ public class ConsoleChat {
     }
 
     public static void main(String[] args) {
-        ConsoleChat cc = new ConsoleChat(".\\chat.log", ".\\bot.answers");
+        ConsoleChat cc = new ConsoleChat("./chat.log", "./bot.answers");
         cc.run();
     }
 
