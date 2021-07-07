@@ -5,8 +5,11 @@ import java.nio.file.Files;
 
 public class Contact implements Serializable {
     private static final long serialVersionUID = 1L;
-    private final int zipCode;
-    private final String phone;
+    private int zipCode;
+    private String phone;
+
+    public Contact() {
+    }
 
     public Contact(int zipCode, String phone) {
         this.zipCode = zipCode;

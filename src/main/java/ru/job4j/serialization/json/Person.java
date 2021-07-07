@@ -1,22 +1,36 @@
 package ru.job4j.serialization.json;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.sun.xml.txw2.annotation.XmlElement;
 import ru.job4j.serialization.java.Contact;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.annotation.*;
+import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 
+
+@XmlRootElement(name = "person")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Person {
-    private final String name;
-    private final boolean sex;
-    private final int age;
-    private final Contact contact;
-    private final String[] statuses;
-    private final Purse purse;
+    @XmlAttribute
+    private String name;
+    @XmlAttribute
+    private boolean sex;
+    private int age;
+    private Contact contact;
+    @XmlElementWrapper(name = "statuses")
+    @javax.xml.bind.annotation.XmlElement (name = "status")
+    private String[] statuses;
+    private Purse purse;
+
+    public Person() {
+    }
 
     public Person(String name, boolean sex, int age, Contact contact, String... statuses) {
         this.name = name;
@@ -27,18 +41,21 @@ public class Person {
         this.purse = new Purse(name);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JAXBException {
         final Person person = new Person("Petr", false, 30, new Contact(450000, "11-111"), "Worker", "Married");
         person.getMoney(asList(new BankNote(100, "RUB"), new BankNote(20, "USD")));
-        /* Преобразуем объект person в json-строку. */
-        final Gson gson = new GsonBuilder().create();
 
+        JAXBContext context = JAXBContext.newInstance(Person.class);
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
-        /* формируем json-строку */
-        final String personJson = gson.toJson(person);
-        System.out.println(personJson);
-        final Person personMod = gson.fromJson(personJson, Person.class);
-        System.out.println(personMod);
+        try (StringWriter writer = new StringWriter()) {
+            marshaller.marshal(person, writer);
+            String result = writer.getBuffer().toString();
+            System.out.println(result);
+        } catch (Exception e) {
+        }
+
     }
 
     public void getMoney(List<BankNote> money) {
@@ -55,10 +72,13 @@ public class Person {
                 + ", statuses=" + Arrays.toString(statuses)
                 + '}';
     }
-
+    @XmlElement
+    @XmlAccessorType(XmlAccessType.FIELD)
     private static class Purse {
         final String ownerName;
-        final List<BankNote> bankNotes;
+        @XmlElementWrapper(name = "bankNotes")
+        @javax.xml.bind.annotation.XmlElement (name = "banknote")
+        List<BankNote> bankNotes;
 
         private Purse(String ownerName) {
             this.ownerName = ownerName;
@@ -70,8 +90,12 @@ public class Person {
         }
     }
 
+    @XmlElement("bankNote")
+    @XmlAccessorType(XmlAccessType.FIELD)
     private static class BankNote {
+        @XmlAttribute
         final int nominal;
+        @XmlAttribute
         final String currency;
 
         private BankNote(int nominal, String currency) {

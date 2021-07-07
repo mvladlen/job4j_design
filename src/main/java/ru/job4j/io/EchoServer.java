@@ -16,7 +16,7 @@ public class EchoServer {
 
     private static String getCommand(String getString) {
         var begin = getString.indexOf("/?msg=");
-        var end = getString.indexOf(" ");
+        var end = getString.indexOf(" ", begin);
         if (end < begin) {
             end = getString.length();
         }
@@ -34,6 +34,10 @@ public class EchoServer {
                              new InputStreamReader(socket.getInputStream()))) {
                     out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
                     System.out.println(in);
+                    if (!in.ready()) {
+                        out.flush();
+                        continue;
+                    }
                     String str = in.readLine();
                     while (str != null && !str.isEmpty()) {
                         System.out.println(str);
