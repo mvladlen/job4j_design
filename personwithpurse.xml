@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <name>Petr</name>
+    <sex>false</sex>
+    <age>30</age>
+    <contact>
+        <zipCode>450000</zipCode>
+        <phone>11-111</phone>
+    </contact>
+    <statuses>Worker</statuses>
+    <statuses>Married</statuses>
+    <purse>
+        <ownerName>Petr</ownerName>
+        <bankNotes>
+            <nominal>100</nominal>
+            <currency>RUB</currency>
+        </bankNotes>
+        <bankNotes>
+            <nominal>20</nominal>
+            <currency>USD</currency>
+        </bankNotes>
+    </purse>
+</root>
