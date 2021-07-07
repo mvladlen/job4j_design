@@ -16,7 +16,10 @@ public class EchoServer {
 
     private static String getCommand(String getString) {
         var begin = getString.indexOf("/?msg=");
-        var end = getString.indexOf(' ', begin);
+        var end = getString.indexOf(" ");
+        if (end < begin) {
+            end = getString.length();
+        }
         String ret = getString.substring(begin + 6, end);
         return ret;
     }
@@ -30,17 +33,21 @@ public class EchoServer {
                      BufferedReader in = new BufferedReader(
                              new InputStreamReader(socket.getInputStream()))) {
                     out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
+                    System.out.println(in);
                     String str = in.readLine();
-                    System.out.println(str);
-                    if (str.contains("?msg")) {
-                        if (getCommand(str).equals("Exit")) {
-                            server.close();
+                    while (str != null && !str.isEmpty()) {
+                        System.out.println(str);
+                        if (str.contains("?msg")) {
+                            if (getCommand(str).equals("Exit")) {
+                                server.close();
+                            }
+                            if (getCommand(str).equals("Hello")) {
+                                out.write("Hello".getBytes());
+                            } else {
+                                out.write(getCommand(str).getBytes());
+                            }
                         }
-                        if (getCommand(str).equals("Hello")) {
-                            out.write("Hello".getBytes());
-                        } else {
-                            out.write(getCommand(str).getBytes());
-                        }
+                        str = in.readLine();
                     }
                 } catch (IOException e1) {
                     LOG.error("Input error", e1);
