@@ -23,7 +23,7 @@ public class Config {
 
     private void parse(String str) {
         if (str.length() >= 1 && str.charAt(0) != '#') {
-            int index = str.indexOf("=");
+              int index = str.indexOf("=");
             if (index != str.lastIndexOf("=") || index == 0 || (index + 1) == str.length()) {
                 throw new IllegalArgumentException();
             }
@@ -55,5 +55,7 @@ public class Config {
         }
         return out.toString();
     }
+
+
 
 }
