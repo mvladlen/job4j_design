@@ -25,11 +25,11 @@ public class SimpleTree<E> implements Tree<E> {
     }
 
     public boolean isBinary() {
-        return !this.findByPredicate(eNode -> eNode.children.stream().collect(1) > 2);
+        return this.findByPredicate(eNode -> eNode.children.size() > 2).isEmpty();
     }
 
-    private Optional<Node> findByPredicate(Predicate<Node<E>> condition) {
-        Optional<Node> rsl = Optional.empty();
+    private Optional<Node<E>> findByPredicate(Predicate<Node<E>> condition) {
+        Optional<Node<E>> rsl = Optional.empty();
         Queue<Node<E>> data = new LinkedList<>();
         data.offer(this.root);
         while (!data.isEmpty()) {
@@ -45,6 +45,8 @@ public class SimpleTree<E> implements Tree<E> {
 
     @Override
     public Optional<Node<E>> findBy(E value) {
+        return this.findByPredicate(eNode -> eNode.value.equals(value));
+/*
         Optional<Node<E>> rsl = Optional.empty();
         Queue<Node<E>> data = new LinkedList<>();
         data.offer(this.root);
@@ -57,5 +59,7 @@ public class SimpleTree<E> implements Tree<E> {
             data.addAll(el.children);
         }
         return rsl;
+    }
+    */
     }
 }
