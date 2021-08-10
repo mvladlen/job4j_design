@@ -1,6 +1,5 @@
 package ru.job4j.map;
 
-import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -15,7 +14,10 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean put(K key, V value) {
-        int h = hash(key.hashCode());
+        if (((float) (count + 1) / capacity) > LOAD_FACTOR) {
+            expand();
+        }
+        int h = indexFor(hash(key.hashCode()));
         if (table[h] == null) {
             table[h] = new MapEntry<>(key, value);
             count++;
@@ -26,10 +28,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
     }
 
     private int hash(int hashCode) {
-        if (hashCode != 0) {
-            return hashCode % capacity;
-        }
-        return 0;
+        return hashCode * 7;
     }
 
     private int indexFor(int hash) {
@@ -37,13 +36,23 @@ public class SimpleMap<K, V> implements Map<K, V> {
     }
 
     private void expand() {
-        table = Arrays.copyOf(table, capacity * 2);
+        MapEntry<K, V>[] tableNew = table;
+        table = new MapEntry[capacity * 2];
+        count = 0;
+        modCount++;
         capacity *= 2;
+        int i = 0;
+        while (i < tableNew.length) {
+            if (tableNew[i] != null) {
+                put(tableNew[i].key, tableNew[i].value);
+            }
+            i++;
+        }
     }
 
     @Override
     public V get(K key) {
-        int h = hash(key.hashCode());
+        int h = indexFor(hash(key.hashCode()));
         if (table[h] != null) {
             return table[h].value;
         }
@@ -52,7 +61,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean remove(K key) {
-        int h = hash(key.hashCode());
+        int h = indexFor(hash(key.hashCode()));
         if (table[h] != null) {
             table[h] = null;
             count--;
@@ -91,7 +100,6 @@ public class SimpleMap<K, V> implements Map<K, V> {
                 extracted++;
                 return data[point].key;
             }
-
         };
     }
 
@@ -104,7 +112,5 @@ public class SimpleMap<K, V> implements Map<K, V> {
             this.key = key;
             this.value = value;
         }
-
     }
-
 }

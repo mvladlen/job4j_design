@@ -75,5 +75,30 @@ public class SimpleMapTest  {
         System.out.println(iterator.next());
     }
 
+    @Test
+    public void whenExpanded() {
+        map.put(1, stringOne);
+        map.put(2, stringTwo);
+        map.put(3, stringOne);
+        map.put(4, stringTwo);
+        map.put(5, stringOne);
+        map.put(6, stringTwo);
+        map.put(7, stringOne);
+        map.put(8, stringTwo);
+        map.put(9, stringOne);
+        map.put(10, stringTwo);
+        Iterator<Integer> iterator = map.iterator();
+        assertNotNull(iterator.next());
+        assertNotNull(iterator.next());
+        assertNotNull(iterator.next());
+        assertNotNull(iterator.next());
+        assertNotNull(iterator.next());
+        assertNotNull(iterator.next());
+        assertNotNull(iterator.next());
+        assertNotNull(iterator.next());
+        assertNotNull(iterator.next());
+        assertNotNull(iterator.next());
+    }
+
 
 }
